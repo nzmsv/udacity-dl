@@ -35,51 +35,68 @@
 
   <div id="container">
 
-    <div class="download">
-      <a href="https://github.com/nzmsv/udacity-dl/zipball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/zip.png"></a>
-      <a href="https://github.com/nzmsv/udacity-dl/tarball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/tar.png"></a>
-    </div>
-
     <h1><a href="https://github.com/nzmsv/udacity-dl">udacity-dl</a>
       <span class="small">by <a href="https://github.com/nzmsv">nzmsv</a></span></h1>
 
     <div class="description">
-      A Google Chrome extension to download Udacity.com videos for offline watching
+      A Google Chrome extension to download Udacity.com videos for offline watching.
     </div>
 
-    
-
-    
-
-    
-
-    
-      <h2>License</h2>
-      <p>CC0 Public Domain <http://creativecommons.org/publicdomain/zero/1.0/></p>
-    
-
-    
-      <h2>Authors</h2>
-      <p>Greg Inozemtsev (greg@nzmsv.com)<br/>      </p>
-    
-
-    
-      <h2>Contact</h2>
-      <p>Greg Inozemtsev (greg@nzmsv.com)<br/>      </p>
-    
-
     <h2>Download</h2>
+	<p><a href="udacity-dl.crx">Install udacity-dl Chrome extension</a></p>
     <p>
-      You can download this project in either
+      You can download the source in either
       <a href="https://github.com/nzmsv/udacity-dl/zipball/master">zip</a> or
-      <a href="https://github.com/nzmsv/udacity-dl/tarball/master">tar formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
+      <a href="https://github.com/nzmsv/udacity-dl/tarball/master">tar</a>
+      formats, or clone the project
+      with <a href="http://git-scm.com">Git</a> by running:
       <pre>$ git clone git://github.com/nzmsv/udacity-dl</pre>
     </p>
+
+    <h2>Usage</h2>
+	<p>
+	  <ol>
+		<li>Once installed, go to any Udacity course content page (the extension will activate on pages matching http://*.udacity.com/view*).</li>
+		<li>A new button labelled <b>Download</b> button should appear next to the video list.
+		  <img src="step1.png"/></li>
+		<li>Clicking it brings up a full list of videos for the
+		course.  This can be dismissed by clicking the close button in
+		the upper right corner.  <img src="step2.png"/></li>
+		<li>Three output formats are available:
+		  <ul>
+			<li><b>Direct</b> links to video files.  These are
+			resolved to the closest server on YouTube's CDN.  Just
+			click and download.  Note: these links eventually
+			expire.</li>
+			<li><b>YouTube</b> links.  These lead to the YouTube pages
+			for the video.  Handy for use
+			with <a href="http://rg3.github.com/youtube-dl/">youtube-dl</a>.</li>
+			<li><b>Raw</b> representation of the direct links for feeding to wget or another batch
+			downloader.  Hint:
+			  <pre>
+$ wget -i - --content-disposition &lt;&lt;EOF
+--list of links here--
+EOF
+</pre></li>
+		  </ul>
+		</li>
+	  </ol>
+    </p>
+
+    <h2>TODO</h2>
+	<p>
+	  <ul>
+		<li>Make video format user-selectable</li>
+		<li>Clean up the general mess</li>
+		<li>...</li>
+	  </ul>
+	</p>
+
+    <h2>License</h2>
+    <p><a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0 Public Domain</a></p>
+
+    <h2>Authors</h2>
+    <p>Greg Inozemtsev (greg@nzmsv.com)</p>
 
     <div class="footer">
       get the source code on GitHub : <a href="https://github.com/nzmsv/udacity-dl">nzmsv/udacity-dl</a>
