@@ -1,0 +1,19 @@
+{
+    "name": "Udacity Video Downloader",
+    "version": "0.0.1",
+    "description": "Downloads videos from Udacity for offline viewing.",
+    "content_scripts" : [
+        {
+            "matches" : [
+                "http://*.udacity.com/view*"
+            ],
+            "js" : ["contentscript.js"]
+        }
+    ],
+    "permissions": [
+        "tabs",
+        "http://*.udacity.com/*",
+        "http://*.youtube.com/*"
+    ],
+    "update_url": "http://www.nzmsv.com/udacity-dl/update.xml"
+}
