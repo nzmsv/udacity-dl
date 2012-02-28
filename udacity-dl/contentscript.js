@@ -317,11 +317,6 @@ function getUnit(data)
 
 		download.hidden = true;
 		download.setAttribute('class', 'width960');
-		var content = document.getElementById('content');
-		content.parentNode.insertBefore(download, content);
-
-		hideclass('udacity-dl-youtube-id');
-		hideclass('udacity-dl-raw-link');
 
 		openLink.addEventListener('click', function () {
 
@@ -357,13 +352,19 @@ function getUnit(data)
 			openLink.removeAttribute('style');
 		});
 
-		var timeout = setTimeout(function () {
+		function wait_button() {
 			var next = document.getElementById('nextNugget');
-			if (next && next.parentNode) {
-				clearTimeout(timeout);
+			var content = document.getElementById('content');
+			if (content && content.parentNode &&
+				next && next.parentNode) {
+				document.removeEventListener('DOMNodeInserted', wait_button);
+				content.parentNode.insertBefore(download, content);
 				next.parentNode.insertBefore(target, next);
+				hideclass('udacity-dl-youtube-id');
+				hideclass('udacity-dl-raw-link');
 			}
-		}, 300);
+		};
+		document.addEventListener('DOMNodeInserted', wait_button, false);
 	}
 }
 
