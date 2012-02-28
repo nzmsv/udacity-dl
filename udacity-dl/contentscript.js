@@ -15,7 +15,7 @@
 */
 
 //API version
-udacity_version = 'dacity-10';
+udacity_version = 'dacity-11';
 
 //YouTube formats in order of preference
 //(see http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs for a description)
