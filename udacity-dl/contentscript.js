@@ -1,6 +1,5 @@
 /*
   udacity-dl - Udacity Video Downloader
-  Version 0.0.1
 
   Written in 2012 by Greg Inozemtsev <greg@nzmsv.com>
 
@@ -15,7 +14,7 @@
 */
 
 //API version
-udacity_version = 'dacity-12';
+udacity_version = 'dacity-13';
 
 //YouTube formats in order of preference
 //(see http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs for a description)
