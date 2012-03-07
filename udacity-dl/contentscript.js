@@ -14,7 +14,10 @@
 */
 
 //API version
-udacity_version = 'dacity-13';
+udacity_version_base = 'dacity-';
+udacity_version_verified = 12;
+udacity_version_min = 12;
+udacity_version_tries = 6 // this is just a guess
 
 //YouTube formats in order of preference
 //(see http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs for a description)
@@ -22,7 +25,8 @@ format_pref = ['22', '34', '18', '43'];
 //TODO: Add a drop-down format selector and store preferred value in LocalStorage
 
 
-function udacityAjax(request, type, callback) {
+function udacityAjax(request, type, callback)
+{
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(data) {
 		if (xhr.readyState == 4) {
@@ -41,10 +45,50 @@ function udacityAjax(request, type, callback) {
 	xhr.send();
 };
 
+function tryRequest(version)
+{
+	var trycount = parseInt("0" + tryRequest.tries)
+	tryRequest.tries = ++trycount;
+	udacityAjax(JSON.stringify({
+		data: {
+			path: document.location.hash
+		},
+		method: 'course.get',
+		version: (udacity_version_base + tryRequest.api_version++)
+	}), "application/json;charset=utf-8", getUnit);
+}
 
 function getUnit(data)
 {
-	if (data.version == udacity_version) {
+	var version_warning = document.createElement('div');
+	{
+		version_warning.appendChild(document.createTextNode("This new version of Udacity has not yet been tested with the download helper extension. "));
+		version_warning.setAttribute('style', 'padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; text-align: center; color: black; background-color: #676767; font-size: 1.2em;');
+		var el2 = document.createElement('a');
+		el2.appendChild(document.createTextNode("Please report any errors here."));
+		el2.setAttribute('href', 'http://github.com/nzmsv/udacity-dl/issues/');
+		el2.setAttribute('target', '_blank');
+		version_warning.appendChild(el2);
+	}
+
+	if (data.error && data.error.type == 'version') {
+		console.log("Version mismatch");
+		if (tryRequest.tries < udacity_version_tries) {
+			console.log("Retrying");
+			tryRequest();
+		}
+		else {
+			function wait_content() {
+				var content = document.getElementById('content');
+				if (content && content.parentNode) {
+					document.removeEventListener('DOMNodeInserted', wait_content);
+					content.parentNode.insertBefore(version_warning, content);
+				}
+			};
+			document.addEventListener('DOMNodeInserted', wait_content, false);
+		}
+	}
+	else { //API version matched
 		function showclass(classname)
 		{
 			var ids = document.getElementsByClassName(classname);
@@ -188,6 +232,8 @@ function getUnit(data)
 		var closeLink = document.createElement('div');
 		closeLink.setAttribute('style', "float:right;cursor:pointer;height:23px;width:23px;padding:0px;background:url('http://www.udacity.com/media/img/close-button-23x23.gif');");
 		download.appendChild(closeLink);
+
+		download.appendChild(version_warning);
 
 		var el = document.createElement('h1');
 		el.appendChild(document.createTextNode(data.payload.course.name));
@@ -361,19 +407,19 @@ function getUnit(data)
 				next.parentNode.insertBefore(target, next);
 				hideclass('udacity-dl-youtube-id');
 				hideclass('udacity-dl-raw-link');
+				if (data.version
+					== udacity_version_base + udacity_version_verified) {
+					download.removeChild(version_warning);
+					console.log("hide");
+				}
 			}
 		};
 		document.addEventListener('DOMNodeInserted', wait_button, false);
 	}
 }
 
-
 if (document.querySelectorAll('#content .unit-header')) {
-	udacityAjax(JSON.stringify({
-		data: {
-			path: document.location.hash
-		},
-		method: 'course.get',
-		version: udacity_version
-	}), "application/json;charset=utf-8", getUnit);
+	tryRequest.api_version = udacity_version_verified;
+	tryRequest();
+	tryRequest.api_version = udacity_version_min;
 }
