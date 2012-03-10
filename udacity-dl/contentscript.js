@@ -14,10 +14,7 @@
 */
 
 //API version
-udacity_version_base = 'dacity-';
-udacity_version_verified = 12;
-udacity_version_min = 12;
-udacity_version_tries = 6 // this is just a guess
+udacity_version_verified = 'dacity-13';
 
 //YouTube formats in order of preference
 //(see http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs for a description)
@@ -45,18 +42,6 @@ function udacityAjax(request, type, callback)
 	xhr.send();
 };
 
-function tryRequest(version)
-{
-	var trycount = parseInt("0" + tryRequest.tries)
-	tryRequest.tries = ++trycount;
-	udacityAjax(JSON.stringify({
-		data: {
-			path: document.location.hash
-		},
-		method: 'course.get',
-		version: (udacity_version_base + tryRequest.api_version++)
-	}), "application/json;charset=utf-8", getUnit);
-}
 
 function getUnit(data)
 {
@@ -73,20 +58,14 @@ function getUnit(data)
 
 	if (data.error && data.error.type == 'version') {
 		console.log("Version mismatch");
-		if (tryRequest.tries < udacity_version_tries) {
-			console.log("Retrying");
-			tryRequest();
-		}
-		else {
-			function wait_content() {
-				var content = document.getElementById('content');
-				if (content && content.parentNode) {
-					document.removeEventListener('DOMNodeInserted', wait_content);
-					content.parentNode.insertBefore(version_warning, content);
-				}
-			};
-			document.addEventListener('DOMNodeInserted', wait_content, false);
-		}
+		function wait_content() {
+			var content = document.getElementById('content');
+			if (content && content.parentNode) {
+				document.removeEventListener('DOMNodeInserted', wait_content);
+				content.parentNode.insertBefore(version_warning, content);
+			}
+		};
+		document.addEventListener('DOMNodeInserted', wait_content, false);
 	}
 	else { //API version matched
 		function showclass(classname)
@@ -407,11 +386,8 @@ function getUnit(data)
 				next.parentNode.insertBefore(target, next);
 				hideclass('udacity-dl-youtube-id');
 				hideclass('udacity-dl-raw-link');
-				if (data.version
-					== udacity_version_base + udacity_version_verified) {
+				if (data.version == udacity_version_verified)
 					download.removeChild(version_warning);
-					console.log("hide");
-				}
 			}
 		};
 		document.addEventListener('DOMNodeInserted', wait_button, false);
@@ -419,7 +395,10 @@ function getUnit(data)
 }
 
 if (document.querySelectorAll('#content .unit-header')) {
-	tryRequest.api_version = udacity_version_verified;
-	tryRequest();
-	tryRequest.api_version = udacity_version_min;
+	udacityAjax(JSON.stringify({
+		data: {
+			path: document.location.hash
+		},
+		method: 'course.get'
+	}), "application/json;charset=utf-8", getUnit);
 }
