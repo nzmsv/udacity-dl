@@ -168,6 +168,11 @@ function getUnit(data)
 						el.setAttribute('class', 'udacity-dl-direct-link');
 						li.appendChild(el);
 
+						var throbber = document.createElement('img');
+						throbber.setAttribute('src', chrome.extension.getURL(
+							"throbber.gif"));
+						el.appendChild(throbber);
+
 						var el2 = document.createElement('a');
 						el.appendChild(el2);
 
@@ -181,6 +186,7 @@ function getUnit(data)
 						el2.updateData = updateData;
 						el2.changeFormat = changeFormat;
 						el2.rawLink = document.createElement('a');
+						el2.progress = throbber;
 						el.appendChild(el2.rawLink);
 						el2.rawLink.setAttribute('style', '-webkit-user-select:text;white-space:nowrap');
 
@@ -349,12 +355,14 @@ function getUnit(data)
 			function getFormats(youtube_id, a)
 			{
 				a.videoLinks = null;
+				a.progress.hidden = false;
 				a.changeFormat();
 				var xhr = new XMLHttpRequest();
 				xhr.onreadystatechange = function(data) {
 					if (xhr.readyState == 4 && xhr.status == 200) {
 						a.updateData(xhr.responseText);
 						a.changeFormat(format_pref);
+						a.progress.hidden = true;
 					}
 				}
 				var url = 'http://www.youtube.com/get_video_info?video_id='
