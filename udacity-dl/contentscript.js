@@ -154,7 +154,7 @@ function getUnit(data)
 			for (v in layout) {
 				var video = layout[v];
 
-				if (video.nugget_key) {
+				if (video && video.nugget_key) {
 					video = video_map[video.nugget_key];
 
 					if (video.media && video.media.youtube_id) {
@@ -198,7 +198,7 @@ function getUnit(data)
 						li.appendChild(el);
 					}
 				}
-				else {
+				else if (video) {
 					vlist.appendChild(videolist(video_map, video));
 				}
 			}
@@ -316,9 +316,11 @@ function getUnit(data)
 
 			ulist.appendChild(el);
 
-			var video_map = {};
+			var video_map = new Array();
 			for (v in unit.nuggets) {
-				video_map[unit.nuggets[v].key] = unit.nuggets[v];
+				var nugget = unit.nuggets[v];
+				if (nugget)
+					video_map[nugget.key] = nugget;
 			}
 
 			el2 = document.createElement('ol');
