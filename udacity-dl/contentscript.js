@@ -16,7 +16,7 @@
 ;(function(window)
 {
 	//API version
-	var udacity_version_verified = 'dacity-16';
+	var udacity_version_verified = 'dacity-24';
 
 	//YouTube formats in order of preference
 	//(see http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs for a description)
@@ -52,7 +52,7 @@
 		var version_warning = document.createElement('div');
 		{
 			version_warning.appendChild(document.createTextNode("This new version of Udacity has not yet been tested with the download helper extension. "));
-			version_warning.setAttribute('style', 'padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; text-align: center; color: black; background-color: #676767; font-size: 1.2em;');
+			version_warning.setAttribute('style', 'padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; text-align: center; color: black; background-color: gainsboro; font-size: 1.2em;');
 			var el2 = document.createElement('a');
 			el2.appendChild(document.createTextNode("Please report any errors here."));
 			el2.setAttribute('href', 'http://github.com/nzmsv/udacity-dl/issues/');
@@ -248,14 +248,14 @@
 			download.appendChild(el);
 
 			var tools = document.createElement('div');
-			tools.setAttribute('style', 'float:right;clear:both;background-color:#333;padding:5px 5px 0px 25px;border-top-left-radius:5px;');
+			tools.setAttribute('style', 'float:right;clear:both;background-color:gainsboro;padding:5px 5px 0px 25px;border-top-left-radius:5px;margin-top:-10px');
 			download.appendChild(tools);
 
 			el = document.createElement('div');
 			el.setAttribute('style', 'display:inline;margin-right:1em');
 			var el2 = document.createElement('a');
 			el2.setAttribute('class', 'arrow');
-			el2.setAttribute('style', 'cursor:pointer');
+			el2.setAttribute('style', 'cursor:pointer;color:#176E9B');
 			el2.appendChild(document.createTextNode("Direct"));
 			el2.visible = true;
 			el2.addEventListener('click', function () {
@@ -278,7 +278,7 @@
 			el.setAttribute('class', '');
 			el2 = document.createElement('a');
 			el2.setAttribute('class', 'arrow disabled');
-			el2.setAttribute('style', 'cursor:pointer');
+			el2.setAttribute('style', 'cursor:pointer;color:#176E9B');
 			el2.appendChild(document.createTextNode("YouTube"));
 			el2.addEventListener('click', function () {
 				if (this.visible) {
@@ -300,7 +300,7 @@
 			el.setAttribute('class', '');
 			el2 = document.createElement('a');
 			el2.setAttribute('class', 'arrow disabled');
-			el2.setAttribute('style', 'cursor:pointer');
+			el2.setAttribute('style', 'cursor:pointer;color:#176E9B');
 			el2.appendChild(document.createTextNode("Raw"));
 			el2.addEventListener('click', function () {
 				if (this.visible) {
@@ -427,13 +427,14 @@
 			});
 
 			function waitInsertButton() {
-				var next = document.getElementById('nextNugget');
+				var buttonContainer = document.getElementById('player-right-column');
 				var content = document.getElementById('content');
 				if (content && content.parentNode &&
-						next && next.parentNode) {
+						buttonContainer && buttonContainer.querySelector('.units')) {
 					document.removeEventListener('DOMNodeInserted', waitInsertButton);
 					content.parentNode.insertBefore(download, content);
-					next.parentNode.insertBefore(target, next);
+					content.parentNode.insertBefore(download, content);
+					buttonContainer.appendChild(target);
 					hideclass('udacity-dl-youtube-id');
 					hideclass('udacity-dl-raw-link');
 					if (data.version == udacity_version_verified)
