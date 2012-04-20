@@ -479,6 +479,7 @@
 				}
 			};
 			document.addEventListener('DOMNodeInserted', waitInsertButton, false);
+			waitInsertButton();
 		}
 	}
 
