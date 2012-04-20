@@ -16,13 +16,7 @@
 ;(function(window)
 {
 	//API version
-	var udacity_version_verified = 'dacity-24';
-
-	//YouTube formats in order of preference
-	//(see http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs for a description)
-	var format_pref = ['22', '34', '18', '43'];
-	//TODO: Add a drop-down format selector and store preferred value in LocalStorage
-
+	var udacity_version_verified = 'dacity-32';
 
 	var document = window.document;
 
@@ -130,7 +124,7 @@
 						this.videoLinks = fmt_map;
 					}
 
-					function changeFormat(fmt)
+					function changeFormat(f)
 					{
 						function pad(n) {
 							return ("000" + n).slice(-3);
@@ -139,19 +133,14 @@
 						this.removeAttribute('href');
 						this.rawLink.innerText = '';
 						this.rawLink.removeAttribute('href');
-						if (this.videoLinks) {
-							for (f in fmt) {
-								if (this.videoLinks[fmt[f]]) {
-									var link = this.videoLinks[fmt[f]]
-										+ '&title='
-										+ encodeURIComponent(pad(this.videoNumber)
-															 + ' ' + this.innerText);
-									this.setAttribute('href', link);
-									this.rawLink.innerText = link;
-									this.rawLink.setAttribute('href', link);
-									break;
-								}
-							}
+						if (this.videoLinks && this.videoLinks[f]) {
+							var link = this.videoLinks[f]
+								+ '&title='
+								+ encodeURIComponent(pad(this.videoNumber)
+													 + ' ' + this.innerText);
+							this.setAttribute('href', link);
+							this.rawLink.innerText = link;
+							this.rawLink.setAttribute('href', link);
 						}
 					}
 
@@ -231,7 +220,50 @@
 
 			download.appendChild(version_warning);
 
-			var el = document.createElement('h1');
+			var el = document.createElement('form');
+			el.setAttribute('style', "margin-top:12pt;float:right;clear:right");
+			var el2 = document.createElement('span');
+			el2.setAttribute('style', "font-size:8pt");
+			el2.appendChild(document.createTextNode("Format"));
+			el.appendChild(el2);
+			el2 = document.createElement('select');
+			el2.setAttribute('size', "1");
+			el2.setAttribute('style', "font-size:8pt;padding:1px");
+			el.appendChild(el2);
+			download.appendChild(el);
+			var format_chooser = el2;
+
+			el = document.createElement('option');
+			el.setAttribute('value', "37");
+			el.appendChild(document.createTextNode("MP4 1080p"));
+			el2.appendChild(el);
+			el = document.createElement('option');
+			el.setAttribute('value', "22");
+			el.appendChild(document.createTextNode("MP4 720p"));
+			el2.appendChild(el);
+			el = document.createElement('option');
+			el.setAttribute('value', "18");
+			el.appendChild(document.createTextNode("MP4 360p"));
+			el2.appendChild(el);
+			el = document.createElement('option');
+			el.setAttribute('value', "46");
+			el.appendChild(document.createTextNode("WebM 1080p"));
+			el2.appendChild(el);
+			el = document.createElement('option');
+			el.setAttribute('value', "45");
+			el.appendChild(document.createTextNode("WebM 720p"));
+			el2.appendChild(el);
+			el = document.createElement('option');
+			el.setAttribute('value', "44");
+			el.appendChild(document.createTextNode("WebM 480p"));
+			el2.appendChild(el);
+			el = document.createElement('option');
+			el.setAttribute('value', "43");
+			el.appendChild(document.createTextNode("WebM 360p"));
+			el2.appendChild(el);
+			format_chooser.value = localStorage["udacity-dl-format"];
+
+			el = document.createElement('h1');
 			el.appendChild(document.createTextNode(data.payload.course.name));
 			download.appendChild(el);
 
@@ -253,7 +285,7 @@
 
 			el = document.createElement('div');
 			el.setAttribute('style', 'display:inline;margin-right:1em');
-			var el2 = document.createElement('a');
+			el2 = document.createElement('a');
 			el2.setAttribute('class', 'arrow');
 			el2.setAttribute('style', 'cursor:pointer;color:#176E9B');
 			el2.appendChild(document.createTextNode("Direct"));
@@ -375,7 +407,7 @@
 					xhr.onreadystatechange = function(data) {
 						if (xhr.readyState == 4 && xhr.status == 200) {
 							a.updateData(xhr.responseText);
-							a.changeFormat(format_pref);
+							a.changeFormat(format_chooser.value);
 							a.progress.hidden = true;
 						}
 					}
@@ -397,6 +429,11 @@
 			};
 
 			unit_chooser.addEventListener('change', function () {
+				unit_chooser.getUnitLinks();
+			});
+
+			format_chooser.addEventListener('change', function () {
+				localStorage["udacity-dl-format"] = format_chooser.value;
 				unit_chooser.getUnitLinks();
 			});
 

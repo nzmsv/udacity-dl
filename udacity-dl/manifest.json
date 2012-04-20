@@ -1,6 +1,6 @@
 {
     "name": "Udacity Video Downloader",
-    "version": "0.7.24",
+    "version": "0.8.32",
     "description": "Downloads videos from Udacity for offline viewing.",
     "content_scripts" : [
         {
