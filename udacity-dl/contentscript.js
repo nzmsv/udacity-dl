@@ -16,7 +16,7 @@
 ;(function(window)
 {
 	//API version
-	var udacity_version_verified = 'dacity-32';
+	var udacity_version_verified = 'dacity-33';
 
 	var document = window.document;
 
@@ -70,7 +70,7 @@
 			{
 				var ids = document.getElementsByClassName(classname);
 				for (var i = 0; i < ids.length; i++) {
-					ids[i].removeAttribute('style');
+					ids[i].style.display = '';
 				}
 			}
 
@@ -78,7 +78,7 @@
 			{
 				var ids = document.getElementsByClassName(classname);
 				for (var i = 0; i < ids.length; i++) {
-					ids[i].setAttribute('style', 'display:none');
+					ids[i].style.display = 'none';
 				}
 			}
 
@@ -172,6 +172,7 @@
 								el.appendChild(el2);
 
 								el = document.createElement('div');
+								el.setAttribute('style', 'overflow-x:auto;width:95%');
 								el.setAttribute('class', 'udacity-dl-raw-link');
 								li.appendChild(el);
 
@@ -183,7 +184,7 @@
 								el2.rawLink = document.createElement('a');
 								el2.progress = throbber;
 								el.appendChild(el2.rawLink);
-								el2.rawLink.setAttribute('style', '-webkit-user-select:text;white-space:nowrap');
+								el2.rawLink.setAttribute('style', '-webkit-user-select:text;white-space:nowrap;margin:2ex');
 
 								directlinks[video.media.youtube_id] = el2;
 
