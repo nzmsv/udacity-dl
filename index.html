@@ -55,6 +55,7 @@
 		<li>Clicking it brings up a full list of videos for the
 		course.  This can be dismissed by clicking the close button in
 		the upper right corner.  <img src="step2.png"/></li>
+		<li>Select the unit to download and the video format you prefer.</li>
 		<li>Three output formats are available:
 		  <ul>
 			<li><b>Direct</b> links to video files.  These are
@@ -65,25 +66,14 @@
 			for the video.  Handy for use
 			with <a href="http://rg3.github.com/youtube-dl/">youtube-dl</a>.</li>
 			<li><b>Raw</b> representation of the direct links for feeding to wget or another batch
-			downloader.  Hint:
+			downloader.  To use these with wget, save the list of links in a text file and run:
 			  <pre>
-$ wget -i - --content-disposition --trust-server-names &lt;&lt;EOF
-## paste list of links here ##
-EOF
+$ wget -i links.txt --content-disposition --trust-server-names
 </pre></li>
 		  </ul>
 		</li>
 	  </ol>
     </p>
-
-    <h2>TODO</h2>
-	<p>
-	  <ul>
-		<li>Make video format user-selectable</li>
-		<li>Clean up the general mess</li>
-		<li>...</li>
-	  </ul>
-	</p>
 
     <h2>License</h2>
     <p><a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0 Public Domain</a></p>
