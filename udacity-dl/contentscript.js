@@ -16,7 +16,7 @@
 ;(function(window)
 {
 	//API version
-	var udacity_version_verified = 'dacity-33';
+	var udacity_version_verified = 'dacity-37';
 
 	var document = window.document;
 
@@ -261,6 +261,10 @@
 			el = document.createElement('option');
 			el.setAttribute('value', "43");
 			el.appendChild(document.createTextNode("WebM 360p"));
+			el2.appendChild(el);
+			el = document.createElement('option');
+			el.setAttribute('value', "5");
+			el.appendChild(document.createTextNode("FLV 224p"));
 			el2.appendChild(el);
 			format_chooser.value = localStorage["udacity-dl-format"];
 
