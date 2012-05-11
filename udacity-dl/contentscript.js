@@ -16,7 +16,7 @@
 ;(function(window)
 {
 	//API version
-	var udacity_version_verified = 'dacity-37';
+	var udacity_version_verified = 'dacity-45';
 
 	var document = window.document;
 
