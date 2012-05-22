@@ -16,7 +16,7 @@
 ;(function(window)
 {
 	//API version
-	var udacity_version_verified = 'dacity-45';
+	var udacity_version_verified = 'dacity-50';
 
 	var document = window.document;
 
@@ -103,22 +103,19 @@
 							return object;
 						}
 
-						fmt_map = {};
-						data = parseQueryString(qs);
-						fmt = data['fmt_list'];
+						var fmt_map = {};
+						var data = parseQueryString(qs);
+						var fmt = data['fmt_list'];
 						if (fmt) {
 							fmt = fmt.split(',').map(function(a) {
 								return a.split('/')[0];
 							});
 
-							streams = data['url_encoded_fmt_stream_map'].split(',')
-								.map(function(a) {
-									return decodeURIComponent(a.split('&')[0]
-															  .split('url=')[1]);
-								});
+							var streams = data['url_encoded_fmt_stream_map'].split(',')
+								.map(parseQueryString);
 
 							for (var i = 0; i < fmt.length; i++) {
-								fmt_map[fmt[i]] = streams[i];
+								fmt_map[fmt[i]] = streams[i]['url'];
 							}
 						}
 						this.videoLinks = fmt_map;
@@ -185,8 +182,15 @@
 								el2.progress = throbber;
 								el.appendChild(el2.rawLink);
 								el2.rawLink.setAttribute('style', '-webkit-user-select:text;white-space:nowrap;margin:2ex');
-
-								directlinks[video.media.youtube_id] = el2;
+								if (directlinks[video.media.youtube_id]) {
+									errmsg = document.createElement('div');
+									errmsg.appendChild(document.createTextNode("Duplicate video.  Please check the discussion forum for updates."));
+									errmsg.setAttribute('class', 'error');
+									el2.appendChild(errmsg);
+								}
+								else {
+									directlinks[video.media.youtube_id] = el2;
+								}
 
 								el = document.createElement('div');
 								el.setAttribute('class', 'udacity-dl-youtube-id');
