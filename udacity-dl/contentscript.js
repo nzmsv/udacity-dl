@@ -16,7 +16,7 @@
 ;(function(window)
 {
 	//API version
-	var udacity_version_verified = 'dacity-50';
+	var udacity_version_verified = 'dacity-80';
 
 	var document = window.document;
 
@@ -84,7 +84,7 @@
 
 			function getUnitVideos(video_map, layout)
 			{
-				var directlinks = new Object();
+				var directlinks = {};
 
 				function videolist(video_map, layout)
 				{
@@ -273,11 +273,11 @@
 			format_chooser.value = localStorage["udacity-dl-format"];
 
 			el = document.createElement('h1');
-			el.appendChild(document.createTextNode(data.payload.course.name));
+			el.appendChild(document.createTextNode(data.payload.course_title));
 			download.appendChild(el);
 
 			el = document.createElement('h2');
-			el.appendChild(document.createTextNode(data.payload.course_rev.name));
+			el.appendChild(document.createTextNode(data.payload.rev_name));
 			download.appendChild(el);
 
 			el = document.createElement('form');
@@ -389,10 +389,10 @@
 
 				ulist.appendChild(el);
 
-				var video_map = new Array();
+				var video_map = {};
 				for (v in unit.nuggets) {
 					var nugget = unit.nuggets[v];
-					if (nugget)
+					if (nugget && nugget.key)
 						video_map[nugget.key] = nugget;
 				}
 
