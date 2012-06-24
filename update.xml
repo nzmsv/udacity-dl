@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <gupdate xmlns='http://www.google.com/update2/response' protocol='2.0'>
   <app appid='hljgfgkbljogcfjacfachlaenogkdgkn'>
-    <updatecheck codebase='http://nzmsv.github.com/udacity-dl/udacity-dl.crx' version='0.11.50' />
+    <updatecheck codebase='http://nzmsv.github.com/udacity-dl/udacity-dl.crx' version='0.12.80' />
   </app>
 </gupdate>
