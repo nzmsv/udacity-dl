@@ -16,7 +16,7 @@
 ;(function(window)
 {
 	//API version
-	var udacity_version_verified = 'dacity-80';
+	var udacity_version_verified = 'dacity-91';
 
 	var document = window.document;
 
@@ -130,14 +130,21 @@
 						this.removeAttribute('href');
 						this.rawLink.innerText = '';
 						this.rawLink.removeAttribute('href');
-						if (this.videoLinks && this.videoLinks[f]) {
-							var link = this.videoLinks[f]
-								+ '&title='
-								+ encodeURIComponent(pad(this.videoNumber)
-													 + ' ' + this.innerText);
-							this.setAttribute('href', link);
-							this.rawLink.innerText = link;
-							this.rawLink.setAttribute('href', link);
+						if (this.videoLinks) {
+							if (this.videoLinks[f]) {
+								this.errmsg.setAttribute('style', 'display:none');
+								var link = this.videoLinks[f]
+									+ '&title='
+									+ encodeURIComponent(pad(this.videoNumber)
+														 + ' ' + this.innerText);
+								this.setAttribute('href', link);
+								this.rawLink.innerText = link;
+								this.rawLink.setAttribute('href', link);
+							}
+							else {
+								this.errmsg.innerText = "Video not available in selected format";
+								this.errmsg.removeAttribute('style');
+							}
 						}
 					}
 
@@ -149,27 +156,27 @@
 						if (video && video.nugget_key) {
 							video = video_map[video.nugget_key];
 
-							if (video.media && video.media.youtube_id) {
-								// or could check (video.nuggetType == 'lecture')
-								var el = document.createElement('div');
-								vlist.appendChild(el);
-								var li = document.createElement('li');
-								el.appendChild(li);
+                            if (video.media && video.media.youtube_id) {
+                                // or could check (video.nuggetType == 'lecture')
+                                var el = document.createElement('div');
+                                vlist.appendChild(el);
+                                var li = document.createElement('li');
+                                el.appendChild(li);
 
-								el = document.createElement('div');
-								el.setAttribute('class', 'udacity-dl-direct-link');
-								li.appendChild(el);
+                                el = document.createElement('div');
+                                el.setAttribute('class', 'udacity-dl-direct-link');
+                                li.appendChild(el);
 
-								var throbber = document.createElement('img');
-								throbber.setAttribute('src', chrome.extension.getURL(
-									"throbber.gif"));
-								el.appendChild(throbber);
+                                var throbber = document.createElement('img');
+                                throbber.setAttribute('src', chrome.extension.getURL(
+                                    "throbber.gif"));
+                                el.appendChild(throbber);
 
-								var el2 = document.createElement('a');
-								el.appendChild(el2);
+                                var el2 = document.createElement('a');
+                                el.appendChild(el2);
 
-								el = document.createElement('div');
-								el.setAttribute('style', 'overflow-x:auto;width:95%');
+                                el = document.createElement('div');
+                                el.setAttribute('style', 'overflow-x:auto;width:95%');
 								el.setAttribute('class', 'udacity-dl-raw-link');
 								li.appendChild(el);
 
@@ -182,15 +189,16 @@
 								el2.progress = throbber;
 								el.appendChild(el2.rawLink);
 								el2.rawLink.setAttribute('style', '-webkit-user-select:text;white-space:nowrap;margin:2ex');
+								el2.errmsg = document.createElement('div');
+								el2.errmsg.setAttribute('class', 'error');
 								if (directlinks[video.media.youtube_id]) {
-									errmsg = document.createElement('div');
-									errmsg.appendChild(document.createTextNode("Duplicate video.  Please check the discussion forum for updates."));
-									errmsg.setAttribute('class', 'error');
-									el2.appendChild(errmsg);
+									el2.errmsg.appendChild(document.createTextNode("Duplicate video.  Please check the discussion forum for updates."));
 								}
 								else {
+									el2.errmsg.setAttribute('style','display:none');
 									directlinks[video.media.youtube_id] = el2;
 								}
+								el2.appendChild(el2.errmsg);
 
 								el = document.createElement('div');
 								el.setAttribute('class', 'udacity-dl-youtube-id');
