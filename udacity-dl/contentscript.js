@@ -16,7 +16,7 @@
 ;(function(window)
 {
 	//API version
-	var udacity_version_verified = 'dacity-91';
+	var udacity_version_verified = 'dacity-104';
 
 	var document = window.document;
 
@@ -105,6 +105,7 @@
 
 						var fmt_map = {};
 						var data = parseQueryString(qs);
+
 						var fmt = data['fmt_list'];
 						if (fmt) {
 							fmt = fmt.split(',').map(function(a) {
@@ -119,14 +120,19 @@
 							}
 						}
 						this.videoLinks = fmt_map;
+
+						if (data['ttsurl'])
+							this.subLink.setAttribute('href', data['ttsurl'] + "&type=track&lang=en&name=via%20dotsub&fmt=srt");
+						else
+							this.subLink.removeAttribute('href');
+					}
+
+					function pad(n) {
+						return ("000" + n).slice(-3);
 					}
 
 					function changeFormat(f)
 					{
-						function pad(n) {
-							return ("000" + n).slice(-3);
-						}
-
 						this.removeAttribute('href');
 						this.rawLink.innerText = '';
 						this.rawLink.removeAttribute('href');
@@ -176,6 +182,16 @@
                                 el.appendChild(el2);
 
                                 el = document.createElement('div');
+								el.setAttribute('class', 'udacity-dl-sub-link');
+								li.appendChild(el);
+
+                                var sublink = document.createElement('a');
+								sublink.setAttribute('download', pad(videolist.count) + ' ' + video.name + '.srt');
+								sublink.appendChild(document.createTextNode("dotsub en (SRT)"));
+								sublink.setAttribute('style', 'margin-left:2em;-webkit-user-select:text');
+                                el.appendChild(sublink);
+
+                                el = document.createElement('div');
                                 el.setAttribute('style', 'overflow-x:auto;width:95%');
 								el.setAttribute('class', 'udacity-dl-raw-link');
 								li.appendChild(el);
@@ -186,6 +202,7 @@
 								el2.updateData = updateData;
 								el2.changeFormat = changeFormat;
 								el2.rawLink = document.createElement('a');
+								el2.subLink = sublink;
 								el2.progress = throbber;
 								el.appendChild(el2.rawLink);
 								el2.rawLink.setAttribute('style', '-webkit-user-select:text;white-space:nowrap;margin:2ex');
@@ -366,6 +383,28 @@
 			el.appendChild(el2);
 			tools.appendChild(el);
 
+			el = document.createElement('div');
+			el.setAttribute('style', 'display:inline;margin-right:1em');
+			el.setAttribute('class', '');
+			el2 = document.createElement('a');
+			el2.setAttribute('class', 'arrow disabled');
+			el2.setAttribute('style', 'cursor:pointer;color:#176E9B');
+			el2.appendChild(document.createTextNode("Subtitles"));
+			el2.addEventListener('click', function () {
+				if (this.visible) {
+					hideclass('udacity-dl-sub-link');
+					this.visible = false;
+					this.setAttribute('class', 'arrow disabled');
+				}
+				else {
+					showclass('udacity-dl-sub-link');
+					this.visible = true;
+					this.setAttribute('class', 'arrow');
+				}
+			});
+			el.appendChild(el2);
+			tools.appendChild(el);
+
 			var ulist = document.createElement('ul');
 			download.appendChild(ulist);
 
@@ -491,6 +530,7 @@
 					buttonContainer.appendChild(target);
 					hideclass('udacity-dl-youtube-id');
 					hideclass('udacity-dl-raw-link');
+					hideclass('udacity-dl-sub-link');
 					if (data.version == udacity_version_verified)
 						download.removeChild(version_warning);
 				}
