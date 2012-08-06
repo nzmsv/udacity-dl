@@ -16,5 +16,8 @@
         "http://*.udacity.com/*",
         "http://*.youtube.com/*"
     ],
+    "web_accessible_resources": [
+        "throbber.gif"
+    ],
     "update_url": "http://www.nzmsv.com/udacity-dl/update.xml"
 }

@@ -103,6 +103,31 @@
 							return object;
 						}
 
+						function getSubtitles(url, a)
+						{
+							{
+								var tracks_url = url + "&type=list"
+								var xhr = new XMLHttpRequest();
+								xhr.onreadystatechange = function(data) {
+									if (xhr.readyState == 4 && xhr.status == 200) {
+										var tracks = xhr.responseXML;
+
+										var track_name =
+											tracks.evaluate("//*/track[@lang_default='true']/@name", tracks).iterateNext();
+										if (track_name) {
+											track_name = track_name.value;
+											a.innerText = track_name + " (SRT)";
+											a.setAttribute('href', url
+														   + "&type=track&lang=en&fmt=srt&name="
+														   + encodeURIComponent(track_name));
+										}
+									}
+								}
+								xhr.open('GET', tracks_url, true);
+								xhr.send();
+							}
+						}
+
 						var fmt_map = {};
 						var data = parseQueryString(qs);
 
@@ -122,7 +147,7 @@
 						this.videoLinks = fmt_map;
 
 						if (data['ttsurl'])
-							this.subLink.setAttribute('href', data['ttsurl'] + "&type=track&lang=en&name=via%20dotsub&fmt=srt");
+							getSubtitles(data['ttsurl'], this.subLink);
 						else
 							this.subLink.removeAttribute('href');
 					}
@@ -187,7 +212,6 @@
 
                                 var sublink = document.createElement('a');
 								sublink.setAttribute('download', pad(videolist.count) + ' ' + video.name + '.srt');
-								sublink.appendChild(document.createTextNode("dotsub en (SRT)"));
 								sublink.setAttribute('style', 'margin-left:2em;-webkit-user-select:text');
                                 el.appendChild(sublink);
 
