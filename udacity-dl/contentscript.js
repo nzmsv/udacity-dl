@@ -16,7 +16,7 @@
 ;(function(window)
 {
 	//API version
-	var udacity_version_verified = 'dacity-104';
+	var udacity_version_verified = 'dacity-1';
 
 	var document = window.document;
 
@@ -141,7 +141,7 @@
 								.map(parseQueryString);
 
 							for (var i = 0; i < fmt.length; i++) {
-								fmt_map[fmt[i]] = streams[i]['url'];
+								fmt_map[fmt[i]] = streams[i]['url'] + "&signature=" + streams[i]['sig'];
 							}
 						}
 						this.videoLinks = fmt_map;

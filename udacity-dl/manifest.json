@@ -1,6 +1,6 @@
 {
     "name": "Udacity Video Downloader",
-    "version": "0.14.104",
+    "version": "0.15.1",
     "manifest_version": 2,
     "description": "Download videos from Udacity for offline viewing.",
     "homepage_url": "http://www.nzmsv.com/udacity-dl/",
